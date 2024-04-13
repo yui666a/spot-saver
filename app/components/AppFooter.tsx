@@ -53,7 +53,7 @@ export const AppFooter = () => {
             className="hover:underline"
             target="_blank"
             rel="noreferrer"
-            to="https://github.com/coji/remix-spa-example"
+            to="https://github.com/yui666a/gm-spot-saver"
           >
             ソースコード
             <ExternalLinkIcon className="mb-1 ml-1 inline h-4 w-4" />

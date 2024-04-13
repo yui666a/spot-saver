@@ -23,4 +23,4 @@ jobs:
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GM_SPOT_SAVER }}'
-          projectId: remix-spa-example
+          projectId: gm-spot-saver

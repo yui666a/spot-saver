@@ -86,9 +86,7 @@ export default function CreateAccountPage() {
           <div className="text-slate-700">ハンドルネームを決めましょう</div>
 
           <div className="flex flex-row gap-4">
-            <div className="whitespace-nowrap">
-              remix-spa-example.web.app /{' '}
-            </div>
+            <div className="whitespace-nowrap">gm-spot-saver.web.app / </div>
             <Input
               {...getInputProps(handle, { type: 'text' })}
               className={`${

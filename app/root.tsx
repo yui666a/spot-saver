@@ -10,7 +10,7 @@ import { AuthContext, useAuthStateObserve } from './services/auth'
 import './styles/globals.css'
 
 export const meta = () => {
-  return [{ title: 'しずかな Remix SPA Example' }]
+  return [{ title: 'Spot Saver' }]
 }
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {

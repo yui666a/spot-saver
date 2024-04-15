@@ -14,7 +14,7 @@ export default function PublicPageLayout() {
     <div>
       <nav className="flex items-center px-4 py-2">
         <Link to={$path('/')} className="flex-1">
-          しずかな Remix SPA Example
+          Spot Saver
         </Link>
         <div>
           {user?.handle ? (

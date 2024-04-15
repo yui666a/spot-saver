@@ -34,7 +34,7 @@ export const AppFooter = () => {
             </div>
           ) : (
             <div className="flex flex-col gap-4">
-              <div>しずかな Remix SPA Example</div>
+              <div>Spot Saver</div>
               <div>
                 <SignInModal />
               </div>

@@ -3,7 +3,7 @@ import { AppUserMenu } from '~/components/AppUserMenu'
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'しずかな Remix SPA Example' },
+    { title: 'Spot Saver' },
     { name: 'description', content: 'Welcome to Remix (SPA Mode)!' },
   ]
 }

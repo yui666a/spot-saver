@@ -7,12 +7,17 @@ import {
   type MetaFunction,
 } from '@remix-run/react'
 import { useEffect, useState } from 'react'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { $path } from 'remix-routes'
 import { AppFooter } from '~/components/AppFooter'
 import { AppHeadingSection } from '~/components/AppHeadingSection'
 import { WrappedGoogleMap } from '~/components/organisms/GoogleMaps/GoogleMaps'
 import { Button } from '~/components/ui'
-import { Spot, listUserSpots } from '~/models/spots'
+import { listUserCategories } from '~/models/categories'
+import { listUserSpots } from '~/models/spots'
+import { categoriesState } from '~/recoil/atoms/categories'
+import { spotsState } from '~/recoil/atoms/spots'
+import { selectedSpotsState } from '~/recoil/selector/selectedSpotsState'
 import { SignInModal } from '~/routes/auth+/sign_in'
 import { isAuthenticated } from '~/services/auth'
 
@@ -37,19 +42,37 @@ export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
 export default function IndexPage() {
   const user = useLoaderData<typeof clientLoader>()
   const [inputText, setInputText] = useState('')
-  const [spots, setSpots] = useState<Array<Spot>>([])
+  const [, setAllSpots] = useRecoilState(spotsState)
+  const [categories, setCategories] = useRecoilState(categoriesState)
+
+  const spots = useRecoilValue(selectedSpotsState)
+
+  // const [spots, setSpots] = useState<Array<Spot>>([])
 
   useEffect(() => {
+    const useName = 'Hitoshi_Aiso'
+
     const fetchUserCategories = () => {
-      listUserSpots('Hitoshi_Aiso')
-        .then((spots) => {
-          setSpots(spots)
+      listUserCategories(useName)
+        .then((categories) => {
+          setCategories(categories)
         })
         .catch((error) => {
           console.error(error)
         })
     }
+    const fetchUserSpots = () => {
+      listUserSpots(useName)
+        .then((spots) => {
+          setAllSpots(spots)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    }
+
     fetchUserCategories()
+    fetchUserSpots()
   }, [])
 
   return (
@@ -80,7 +103,7 @@ export default function IndexPage() {
         <WrappedGoogleMap spots={spots} />
       </AppHeadingSection>
 
-      <AppFooter />
+      <AppFooter categories={categories} />
     </div>
   )
 }

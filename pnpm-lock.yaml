@@ -95,6 +95,9 @@ dependencies:
   react-twc:
     specifier: ^1.4.1
     version: 1.4.1(@types/react@18.2.73)(react@18.3.0-canary-4b2a1115a-20240202)
+  recoil:
+    specifier: ^0.7.7
+    version: 0.7.7(react-dom@18.3.0-canary-4b2a1115a-20240202)(react@18.3.0-canary-4b2a1115a-20240202)
   remix-flat-routes:
     specifier: ^0.6.4
     version: 0.6.4(@remix-run/dev@2.8.1)
@@ -6573,6 +6576,10 @@ packages:
       pumpify: 1.5.1
       through2: 2.0.5
 
+  /hamt_plus@1.0.2:
+    resolution: {integrity: sha512-t2JXKaehnMb9paaYA7J0BX8QQAY8lwfQ9Gjf4pg/mk4krt+cmwmU652HOoWonf+7+EQV97ARPMhhVgU1ra2GhA==}
+    dev: false
+
   /hard-rejection@2.1.0:
     resolution: {integrity: sha512-VIZB+ibDhx7ObhAe7OVtoEbuP4h/MuOTHJ+J8h/eBXotJYl0fBgR72xDFCKgIh22OJZIOVNxBMWuhAr10r8HdA==}
     engines: {node: '>=6'}
@@ -10026,6 +10033,23 @@ packages:
     engines: {node: '>=8.10.0'}
     dependencies:
       picomatch: 2.3.1
+
+  /recoil@0.7.7(react-dom@18.3.0-canary-4b2a1115a-20240202)(react@18.3.0-canary-4b2a1115a-20240202):
+    resolution: {integrity: sha512-8Og5KPQW9LwC577Vc7Ug2P0vQshkv1y3zG3tSSkWMqkWSwHmE+by06L8JtnGocjW6gcCvfwB3YtrJG6/tWivNQ==}
+    peerDependencies:
+      react: '>=16.13.1'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      hamt_plus: 1.0.2
+      react: 18.3.0-canary-4b2a1115a-20240202
+      react-dom: 18.3.0-canary-4b2a1115a-20240202(react@18.3.0-canary-4b2a1115a-20240202)
+    dev: false
 
   /redent@3.0.0:
     resolution: {integrity: sha512-6tDA8g98We0zd0GvVeMT9arEOnTw9qM03L9cJXaCjrip1OO764RDBLBfrB4cwzNGDj5OA5ioymC9GkizgWJDUg==}

@@ -6,7 +6,6 @@ import {
   type ClientLoaderFunctionArgs,
   type MetaFunction,
 } from '@remix-run/react'
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { $path } from 'remix-routes'
 import { AppFooter } from '~/components/AppFooter'
@@ -41,20 +40,7 @@ export default function IndexPage() {
   const [spots, setSpots] = useState<Array<Spot>>([])
 
   useEffect(() => {
-    const getLatLng = async () => {
-      const place = 'オステリア ラ フェニーチェ'
-      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
-      const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`,
-      )
-      if (response.data.results && response.data.results.length > 0) {
-        const { lat, lng } = response.data.results[0].geometry.location
-        console.log({ lat, lng })
-      }
-    }
-    getLatLng()
-
-    function fetchUserCategories() {
+    const fetchUserCategories = () => {
       listUserSpots('Hitoshi_Aiso')
         .then((spots) => {
           setSpots(spots)
@@ -63,7 +49,6 @@ export default function IndexPage() {
           console.error(error)
         })
     }
-
     fetchUserCategories()
   }, [])
 

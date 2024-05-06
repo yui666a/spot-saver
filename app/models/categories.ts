@@ -7,9 +7,8 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  type FieldValue,
   type QueryDocumentSnapshot,
-  type Timestamp,
-  type FieldValue
 } from 'firebase/firestore'
 import { db } from '~/services/firestore'
 
@@ -64,20 +63,19 @@ export const listUserCategories = async (handle: string) => {
 //   return null
 // }
 
-export const addUserCategory = async (handle: string) => {
+export const addUserCategory = async (
+  handle: string,
+  data: Omit<Category, 'id' | 'createdAt' | 'updatedAt'>,
+) => {
   const categoriesRef = collection(db, 'accounts', handle, 'categories')
   const category: Omit<Category, 'id'> = {
-    color: "#cccccc",
-    icon: "",
-    name: "行ってみたい",
+    ...data,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   }
 
   return await addDoc(categoriesRef, category)
 }
-
-
 
 export const updateUserCategory = async (handle: string, data: Category) => {
   const categoryDocRef = doc(

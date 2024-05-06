@@ -24,9 +24,11 @@ export default function PublicPageLayout() {
               className="rounded-full"
               asChild
             >
-              <Link to={$path('/:handle', { handle: user.handle })}>
-                自分のページへ
-              </Link>
+              <img
+                src={user.photoURL || '/avatar.png'}
+                alt={user.handle}
+                className="h-6 w-6 rounded-full"
+              />
             </Button>
           ) : (
             <SignInModal />
@@ -56,7 +58,7 @@ export default function PublicPageLayout() {
           </AppHeadingSection>
         </main>
 
-        <AppFooter />
+        <AppFooter categories={[]} />
       </div>
     </div>
   )

@@ -1,18 +1,22 @@
-import { Stack, TextField } from '@mui/material'
 import {
-  Link,
-  redirect,
+  Avatar,
+  IconButton,
+  Menu,
+  MenuItem,
+  Stack,
+  TextField,
+} from '@mui/material'
+import {
   useLoaderData,
+  useNavigate,
   type ClientLoaderFunctionArgs,
   type MetaFunction,
 } from '@remix-run/react'
 import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { $path } from 'remix-routes'
 import { AppFooter } from '~/components/AppFooter'
 import { AppHeadingSection } from '~/components/AppHeadingSection'
 import { WrappedGoogleMap } from '~/components/organisms/GoogleMaps/GoogleMaps'
-import { Button } from '~/components/ui'
 import { listUserCategories } from '~/models/categories'
 import { listUserSpots } from '~/models/spots'
 import { categoriesState } from '~/recoil/atoms/categories'
@@ -34,12 +38,15 @@ export const meta: MetaFunction = () => {
 export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
   const user = await isAuthenticated(request)
   if (user?.handle) {
-    return redirect($path('/:handle', { handle: user.handle }))
+    // return redirect($path('/:handle', { handle: user.handle }))
+    // return redirect($path('/'))
   }
   return user
 }
 
 export default function IndexPage() {
+  const navigate = useNavigate()
+
   const user = useLoaderData<typeof clientLoader>()
   const [inputText, setInputText] = useState('')
   const [, setAllSpots] = useRecoilState(spotsState)
@@ -47,9 +54,16 @@ export default function IndexPage() {
 
   const spots = useRecoilValue(selectedSpotsState)
 
-  // const [spots, setSpots] = useState<Array<Spot>>([])
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
 
   useEffect(() => {
+    console.log('user', user)
     const useName = 'Hitoshi_Aiso'
 
     const fetchUserCategories = () => {
@@ -90,11 +104,33 @@ export default function IndexPage() {
             fullWidth
           />
           {user?.handle ? (
-            <Button variant="outline" className="rounded-full" asChild>
-              <Link to={$path('/:handle', { handle: user.handle })}>
-                自分のページへ
-              </Link>
-            </Button>
+            <>
+              <IconButton onClick={handleMenu}>
+                {user.photoURL ? (
+                  <Avatar src={user.photoURL} />
+                ) : (
+                  <Avatar>{user.displayName?.slice(0, 1)}</Avatar>
+                )}
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={() => navigate('/settings')}>設定</MenuItem>
+                <MenuItem onClick={handleClose}>ログアウト</MenuItem>
+              </Menu>
+            </>
           ) : (
             <SignInModal />
           )}

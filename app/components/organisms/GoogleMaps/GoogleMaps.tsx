@@ -1,5 +1,6 @@
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 import { useEffect, useState } from 'react'
+import { Spot } from '~/models/spots'
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
 
@@ -13,18 +14,28 @@ const containerStyle = {
   height: '500px',
 }
 
-export const WrappedGoogleMap = () => {
-  const [marker, setMarker] = useState<{
-    lat: number
-    lng: number
-  } | null>(null)
+export type WrappedGoogleMapProps = {
+  spots: Array<Spot>
+}
+
+type Position = {
+  lat: number
+  lng: number
+}
+
+export const WrappedGoogleMap: React.FC<WrappedGoogleMapProps> = ({
+  spots,
+}) => {
+  const [currentLocation, setCurrentLocation] = useState<Position | null>(null)
+
+  const [markers, setMarkers] = useState<Array<Position> | null>([])
 
   useEffect(() => {
     if (navigator.geolocation) {
       const successFunc: PositionCallback = (s) => {
         const coords = s.coords
 
-        setMarker({
+        setCurrentLocation({
           lat: coords.latitude,
           lng: coords.longitude,
         })
@@ -41,7 +52,7 @@ export const WrappedGoogleMap = () => {
   }, [])
 
   function handleMapClick(event: google.maps.MapMouseEvent) {
-    setMarker({
+    setCurrentLocation({
       lat: event.latLng?.lat() || 0,
       lng: event.latLng?.lng() || 0,
     })
@@ -56,7 +67,15 @@ export const WrappedGoogleMap = () => {
           mapContainerStyle={containerStyle}
           onClick={handleMapClick}
         >
-          {marker && <Marker position={marker} />}
+          {currentLocation && <Marker position={currentLocation} />}
+          {markers?.length &&
+            markers.map((marker) => <Marker position={marker} />)}
+          <Marker
+            position={{
+              lat: 37.4469813,
+              lng: 138.8464919,
+            }}
+          />
         </GoogleMap>
       </LoadScript>
     </>

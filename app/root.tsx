@@ -1,3 +1,5 @@
+import { Theme } from '@radix-ui/themes'
+import '@radix-ui/themes/styles.css'
 import {
   Links,
   Meta,
@@ -25,8 +27,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       </head>
       <body>
         <AuthContext.Provider value={authState}>
-          <Toaster />
-          {children}
+          <Theme>
+            <Toaster />
+            {children}
+          </Theme>
         </AuthContext.Provider>
         <ScrollRestoration />
         <Scripts />

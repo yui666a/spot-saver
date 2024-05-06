@@ -1,3 +1,4 @@
+import { Avatar } from '@mui/material'
 import {
   Link,
   redirect,
@@ -61,9 +62,7 @@ export const SignInModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="rounded-full" variant="outline">
-          はじめる
-        </Button>
+        <Avatar>H</Avatar>
       </DialogTrigger>
       <DialogContent className="max-w-sm">
         <DialogHeader>

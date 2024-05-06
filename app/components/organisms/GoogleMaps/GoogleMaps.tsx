@@ -81,10 +81,17 @@ export const WrappedGoogleMap: React.FC<WrappedGoogleMapProps> = ({
           {spots?.length &&
             spots.map((spot) => (
               <MarkerF
+                clickable={true}
+                onClick={() => {
+                  console.log(spot.title, 'click')
+                }}
                 position={spot.position}
                 key={spot.id}
                 icon={svgMarker}
                 // icon={}
+                title={spot.title}
+                label={spot.title}
+                // optimized={false}
               />
             ))}
         </GoogleMap>

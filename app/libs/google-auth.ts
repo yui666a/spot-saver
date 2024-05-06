@@ -32,7 +32,7 @@ export const createGoogleAuthenticator = <User>({
 }: {
   clientID: string
   callbackURL: string
-  prompt?: 'none' | 'consent' | 'select_acount'
+  prompt?: 'none' | 'consent' | 'select_account'
   hd?: string
   loginHint?: string
   verifyUser: (request: Request, idToken: string) => Promise<User | null>

@@ -14,7 +14,7 @@ import { AppHeadingSection } from '~/components/AppHeadingSection'
 import { Alert, AlertDescription, Button, Input, toast } from '~/components/ui'
 import { createAccount, isAccountExistsByUID } from '~/models/account'
 import { useSignOut } from '~/routes/auth+/sign_out'
-import { requireAuth } from '~/services/auth'
+import { requireAuth, useAuthUser } from '~/services/auth'
 
 const schema = z.object({
   handle: z
@@ -76,6 +76,7 @@ export default function CreateAccountPage() {
     onValidate: ({ formData }) => parseWithZod(formData, { schema }),
   })
   const { signOut } = useSignOut()
+  const authUser = useAuthUser()
 
   return (
     <AppHeadingSection className="items-center">
@@ -89,6 +90,7 @@ export default function CreateAccountPage() {
             <div className="whitespace-nowrap">gm-spot-saver.web.app / </div>
             <Input
               {...getInputProps(handle, { type: 'text' })}
+              defaultValue={authUser?.displayName ?? ''}
               className={`${
                 handle.errors
                   ? 'outline outline-red-500 focus-visible:ring-red-500'

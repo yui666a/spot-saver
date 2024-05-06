@@ -1,3 +1,5 @@
+import { Theme } from '@radix-ui/themes'
+import '@radix-ui/themes/styles.css'
 import {
   Links,
   Meta,
@@ -10,7 +12,7 @@ import { AuthContext, useAuthStateObserve } from './services/auth'
 import './styles/globals.css'
 
 export const meta = () => {
-  return [{ title: 'しずかな Remix SPA Example' }]
+  return [{ title: 'Spot Saver' }]
 }
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -25,8 +27,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       </head>
       <body>
         <AuthContext.Provider value={authState}>
-          <Toaster />
-          {children}
+          <Theme>
+            <Toaster />
+            {children}
+          </Theme>
         </AuthContext.Provider>
         <ScrollRestoration />
         <Scripts />

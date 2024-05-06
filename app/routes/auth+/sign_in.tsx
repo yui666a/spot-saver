@@ -1,3 +1,4 @@
+import { Avatar } from '@mui/material'
 import {
   Link,
   redirect,
@@ -61,15 +62,13 @@ export const SignInModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="rounded-full" variant="outline">
-          はじめる
-        </Button>
+        <Avatar>H</Avatar>
       </DialogTrigger>
       <DialogContent className="max-w-sm">
         <DialogHeader>
-          <DialogTitle>しずかな Remix SPA Example</DialogTitle>
+          <DialogTitle>Spot Saver</DialogTitle>
           <DialogDescription>
-            しずかな Remix SPA Example にサインインしてください。
+            Spot Saver にサインインしてください。
           </DialogDescription>
         </DialogHeader>
 
@@ -84,9 +83,9 @@ export default function SignInPage() {
     <div className="grid h-screen grid-rows-1">
       <Card className="m-auto w-full max-w-md">
         <CardHeader>
-          <CardTitle>しずかな Remix SPA Example</CardTitle>
+          <CardTitle>Spot Saver</CardTitle>
           <CardDescription>
-            しずかな Remix SPA Example にサインインしてください。
+            Spot Saver にサインインしてください。
           </CardDescription>
         </CardHeader>
 

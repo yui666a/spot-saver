@@ -8,7 +8,7 @@ import { requireAuth } from '~/services/auth'
 export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
   const user = await requireAuth(request, { failureRedirect: $path('/') })
   if (user.handle) {
-    return redirect($path('/:handle', { handle: user.handle }))
+    return redirect($path('/'))
   }
   return null
 }

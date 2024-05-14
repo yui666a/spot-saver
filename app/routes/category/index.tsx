@@ -3,8 +3,10 @@
 // import { requireUser } from '~/services/auth'
 // import Setting from './_index'
 
+import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import {
+  IconButton,
   List,
   ListItem,
   ListItemButton,
@@ -12,15 +14,25 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import { useEffect, useState } from 'react'
-import { listUserCategories, type Category } from '~/models/categories'
+import { useEffect } from 'react'
+import { useRecoilState } from 'recoil'
+import { deleteUserCategory, listUserCategories } from '~/models/categories'
+import { categoriesState } from '~/recoil/atoms/categories'
+import { useAuthUser } from '~/services/auth'
 
 const SettingsCategoryPage: React.FC = () => {
-  const [categories, setCategories] = useState<Array<Category>>([])
+  const [categories, setCategories] = useRecoilState(categoriesState)
+
+  const user = useAuthUser()
 
   useEffect(() => {
-    function fetchUserCategories() {
-      listUserCategories('Hitoshi_Aiso')
+    if (!user?.handle) {
+      alert('ログインしてください')
+      return
+    }
+
+    function fetchUserCategories(userHandle: string) {
+      listUserCategories(userHandle)
         .then((categories) => {
           setCategories(categories)
         })
@@ -29,13 +41,18 @@ const SettingsCategoryPage: React.FC = () => {
         })
     }
 
-    fetchUserCategories()
+    fetchUserCategories(user.handle)
   }, [])
 
   return (
     <>
       <Typography variant="h5">カテゴリーの編集</Typography>
       <List>
+        {categories.length === 0 && (
+          <ListItem>
+            <ListItemText primary="カテゴリーがありません" />
+          </ListItem>
+        )}
         {categories.map((category) => (
           <ListItem
             disablePadding
@@ -62,6 +79,21 @@ const SettingsCategoryPage: React.FC = () => {
               </Stack>
               <ListItemText primary={category.name} />
               <EditIcon />
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation()
+                  deleteUserCategory(user?.handle!, category.id)
+                  listUserCategories(user?.handle!)
+                    .then((categories) => {
+                      setCategories(categories)
+                    })
+                    .catch((error) => {
+                      console.error(error)
+                    })
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
             </ListItemButton>
           </ListItem>
         ))}

@@ -12,7 +12,7 @@ export const clientLoader = async () => {
       title: 'サインインしました',
       description: `${user.displayName} さん、ようこそ！`,
     })
-    return redirect($path('/:handle', { handle: user.handle }))
+    return redirect($path('/'))
   }
   return redirect($path('/'))
 }

@@ -11,7 +11,7 @@ const defaultLatLng = {
 
 const containerStyle = {
   width: '100%',
-  height: '500px',
+  height: 'calc(100vh - 120px)',
 }
 
 export type WrappedGoogleMapProps = {
@@ -81,10 +81,17 @@ export const WrappedGoogleMap: React.FC<WrappedGoogleMapProps> = ({
           {spots?.length &&
             spots.map((spot) => (
               <MarkerF
+                clickable={true}
+                onClick={() => {
+                  console.log(spot.title, 'click')
+                }}
                 position={spot.position}
                 key={spot.id}
                 icon={svgMarker}
                 // icon={}
+                title={spot.title}
+                label={spot.title}
+                // optimized={false}
               />
             ))}
         </GoogleMap>

@@ -27,7 +27,7 @@ import { authenticate } from '~/services/google-auth'
 export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
   const user = await isAuthenticated(request)
   if (user?.handle) {
-    return redirect($path('/:handle', { handle: user.handle }))
+    return redirect($path('/'))
   }
   return null
 }
@@ -62,7 +62,7 @@ export const SignInModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Avatar>H</Avatar>
+        <Avatar src="/user.png" />
       </DialogTrigger>
       <DialogContent className="max-w-sm">
         <DialogHeader>

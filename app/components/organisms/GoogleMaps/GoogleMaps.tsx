@@ -11,7 +11,7 @@ const defaultLatLng = {
 
 const containerStyle = {
   width: '100%',
-  height: '500px',
+  height: 'calc(100vh - 120px)',
 }
 
 export type WrappedGoogleMapProps = {

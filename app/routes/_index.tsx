@@ -24,6 +24,7 @@ import { spotsState } from '~/recoil/atoms/spots'
 import { selectedSpotsState } from '~/recoil/selector/selectedSpotsState'
 import { SignInModal } from '~/routes/auth+/sign_in'
 import { isAuthenticated } from '~/services/auth'
+import { useSignOut } from './auth+/sign_out'
 
 export const meta: MetaFunction = () => {
   return [
@@ -46,15 +47,15 @@ export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
 
 export default function IndexPage() {
   const navigate = useNavigate()
+  const { signOut } = useSignOut()
 
   const user = useLoaderData<typeof clientLoader>()
   const [inputText, setInputText] = useState('')
   const [, setAllSpots] = useRecoilState(spotsState)
   const [categories, setCategories] = useRecoilState(categoriesState)
-
   const spots = useRecoilValue(selectedSpotsState)
-
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -63,11 +64,13 @@ export default function IndexPage() {
   }
 
   useEffect(() => {
-    console.log('user', user)
-    const useName = 'Hitoshi_Aiso'
+    if (!user?.handle) {
+      alert('ログインしてください')
+      return
+    }
 
-    const fetchUserCategories = () => {
-      listUserCategories(useName)
+    const fetchUserCategories = (userHandle: string) => {
+      listUserCategories(userHandle)
         .then((categories) => {
           setCategories(categories)
         })
@@ -75,8 +78,8 @@ export default function IndexPage() {
           console.error(error)
         })
     }
-    const fetchUserSpots = () => {
-      listUserSpots(useName)
+    const fetchUserSpots = (userHandle: string) => {
+      listUserSpots(userHandle)
         .then((spots) => {
           setAllSpots(spots)
         })
@@ -85,8 +88,8 @@ export default function IndexPage() {
         })
     }
 
-    fetchUserCategories()
-    fetchUserSpots()
+    fetchUserCategories(user.handle)
+    fetchUserSpots(user.handle)
   }, [])
 
   return (
@@ -94,7 +97,7 @@ export default function IndexPage() {
       <AppHeadingSection className="items-center px-0 ">
         {/* <h1 className="text-xl">Spot Saver</h1> */}
 
-        <Stack direction="row">
+        <Stack direction="row" alignItems="center">
           <TextField
             size="small"
             placeholder="ここで検索"
@@ -102,12 +105,18 @@ export default function IndexPage() {
               setInputText(e.target.value)
             }}
             fullWidth
+            sx={{
+              width: 'calc(100vw - 56px - 12px)',
+              '& .MuiInputBase-root': {
+                borderRadius: '9999px',
+              },
+            }}
           />
           {user?.handle ? (
             <>
               <IconButton onClick={handleMenu}>
                 {user.photoURL ? (
-                  <Avatar src={user.photoURL} />
+                  <Avatar src={user.photoURL || '/user.png'} />
                 ) : (
                   <Avatar>{user.displayName?.slice(0, 1)}</Avatar>
                 )}
@@ -128,7 +137,7 @@ export default function IndexPage() {
                 onClose={handleClose}
               >
                 <MenuItem onClick={() => navigate('/settings')}>設定</MenuItem>
-                <MenuItem onClick={handleClose}>ログアウト</MenuItem>
+                <MenuItem onClick={signOut}>ログアウト</MenuItem>
               </Menu>
             </>
           ) : (

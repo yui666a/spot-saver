@@ -25,7 +25,7 @@ export default function PublicPageLayout() {
               asChild
             >
               <img
-                src={user.photoURL || '/avatar.png'}
+                src={user.photoURL || '/user.png'}
                 alt={user.handle}
                 className="h-6 w-6 rounded-full"
               />

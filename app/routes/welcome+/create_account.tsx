@@ -30,7 +30,7 @@ const schema = z.object({
 export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
   const user = await requireAuth(request, { failureRedirect: $path('/') })
   if (user.handle) {
-    return redirect($path('/:handle', { handle: user.handle }))
+    return redirect($path('/'))
   }
   return null
 }
@@ -66,7 +66,7 @@ export const clientAction = async ({ request }: ClientActionFunctionArgs) => {
     description: 'ようこそ！',
   })
 
-  return redirect($path('/:handle', { handle: submission.value.handle }))
+  return redirect($path('/'))
 }
 
 export default function CreateAccountPage() {

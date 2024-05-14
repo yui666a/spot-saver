@@ -4,19 +4,30 @@
 // import Setting from './_index'
 
 import { Box, Button } from '@mui/material'
+import { useNavigate } from '@remix-run/react'
 import { useState } from 'react'
+import { $path } from 'remix-routes'
 import { importCsv } from '~/libs/importCsv'
+import { useAuthUser } from '~/services/auth'
 import { CsvUploadButton } from './CsvUploadButton'
 
 const SettingPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null)
+  const user = useAuthUser()
+  const navigate = useNavigate()
 
   const handleSubmit = async () => {
+    if (!user?.handle) {
+      alert('ログインしてください')
+      return
+    }
+
     if (file === null) {
       alert('ファイルが選択されていません')
       return
     }
-    importCsv(file, 'Hitoshi_Aiso')
+
+    importCsv(file, user.handle)
       .then(() => {
         alert('インポートが完了しました')
       })
@@ -25,6 +36,7 @@ const SettingPage: React.FC = () => {
         alert('インポートに失敗しました')
       })
   }
+
   return (
     <>
       <Box>CSVのインポート</Box>
@@ -37,7 +49,10 @@ const SettingPage: React.FC = () => {
       >
         送信
       </Button>
-      <Box>リストの編集</Box>
+      <Button onClick={() => navigate($path('/spot'))}>Spotの編集</Button>
+      <Button onClick={() => navigate($path('/category'))}>
+        カテゴリーの編集
+      </Button>
     </>
   )
 }
